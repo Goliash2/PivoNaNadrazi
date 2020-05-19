@@ -1,0 +1,7 @@
+{
+  "name": "Pivo na nádraží",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
