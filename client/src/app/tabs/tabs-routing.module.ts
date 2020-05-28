@@ -16,6 +16,10 @@ const routes: Routes = [
         loadChildren: () => import('../tab2/tab2.module').then(m => m.Tab2PageModule)
       },
       {
+        path: 'mapa',
+        loadChildren: () => import('../mapa/mapa.module').then(m => m.MapaPageModule)
+      },
+      {
         path: 'tab3',
         loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
       },

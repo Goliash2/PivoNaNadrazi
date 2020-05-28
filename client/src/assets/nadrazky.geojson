@@ -1,0 +1,103 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "markerColor": "#7bd02f",
+        "marker-size": "medium",
+        "marker-symbol": "beer",
+        "name": "Hospoda 1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.08721923828125,
+          50.44176389056172
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "markerColor": "#ff0000",
+        "marker-size": "medium",
+        "marker-symbol": "beer",
+        "name": "super Beer"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.3646240234375,
+          50.48023052012273
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.26300048828125,
+          50.29109404231143
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -134.0519278720326,
+          28.591882436865994
+        ]
+      },
+      "properties": {}
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.40494973994979,
+          -22.071063680524922
+        ]
+      },
+      "properties": {}
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          17.540135082083957,
+          -51.851673873408274
+        ]
+      },
+      "properties": {}
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          155.1632307449698,
+          -38.71078707189294
+        ]
+      },
+      "properties": {}
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.44761401398108,
+          -71.27448872174362
+        ]
+      },
+      "properties": {}
+    }
+  ]
+}
