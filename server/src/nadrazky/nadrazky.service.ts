@@ -5,24 +5,31 @@ import {Model} from 'mongoose';
 
 @Injectable()
 export class NadrazkyService {
-    private nadrazky: Nadrazka[] = [];
 
     constructor(@InjectModel('Nadrazka') private readonly nadrazkaModel: Model<Nadrazka>) {
     }
 
-    getAllNadrazky() {
-        return [...this.nadrazky];
+    async getAllNadrazky() {
+        const nadrazky = await this.nadrazkaModel.find().exec();
+        return nadrazky as Nadrazka[];
     }
 
-    getNadrazka(id: string) {
-        const nadrazka = this.nadrazky.find((pub) => pub._id === id);
-        if (!nadrazka) {
+    async getNadrazka(nadrazkaId: string) {
+        const nadrazka = await this.findNadrazka(nadrazkaId);
+        return nadrazka;
+    }
+
+    private async findNadrazka(id: string): Promise<Nadrazka> {
+        let nadrazka;
+        try {
+            nadrazka = await this.nadrazkaModel.findById(id);
+        } catch (e) {
             throw new NotFoundException('Could not find the pub');
         }
-        return {...nadrazka};
+        return nadrazka;
     }
 
-    insertNadrazka(
+    async insertNadrazka(
         name: string,
         station: string,
         type: string,
@@ -53,10 +60,8 @@ export class NadrazkyService {
             beers,
             location
         });
-        newNadrazka.save().then((res) => {
-            console.log(res);
-            return "dummy id";
-        });
+        const result = await newNadrazka.save();
+        return result.id as string;
         //
     }
 }

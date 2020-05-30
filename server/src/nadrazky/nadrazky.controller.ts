@@ -9,8 +9,9 @@ export class NadrazkyController {
     }
 
     @Get()
-    getAllNadrazky() {
-        return this.nadrazkyService.getAllNadrazky();
+    async getAllNadrazky() {
+        const locNadrazky = await this.nadrazkyService.getAllNadrazky();
+        return locNadrazky // .map((nadr) => {id: nadr._id});
     }
 
     @Get(':id')
@@ -19,7 +20,7 @@ export class NadrazkyController {
     }
 
     @Post()
-    addNadrazka(@Body() completeBody: {
+    async addNadrazka(@Body() completeBody: {
         name: string,
         station: string,
         type: string,
@@ -35,8 +36,8 @@ export class NadrazkyController {
             lat: number,
             lng: number
         }
-    }): any {
-        this.nadrazkyService.insertNadrazka(
+    }) {
+        const generatedId = await this.nadrazkyService.insertNadrazka(
             completeBody.name,
             completeBody.station,
             completeBody.type,
@@ -50,5 +51,6 @@ export class NadrazkyController {
             completeBody.beers,
             completeBody.location
         );
+        return { id: generatedId };
     }
 }
