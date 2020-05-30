@@ -20,7 +20,6 @@ export class NadrazkyController {
 
     @Post()
     addNadrazka(@Body() completeBody: {
-        id: string,
         name: string,
         station: string,
         type: string,
@@ -38,7 +37,6 @@ export class NadrazkyController {
         }
     }): any {
         this.nadrazkyService.insertNadrazka(
-            completeBody.id,
             completeBody.name,
             completeBody.station,
             completeBody.type,

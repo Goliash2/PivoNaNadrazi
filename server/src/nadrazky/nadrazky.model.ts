@@ -1,3 +1,5 @@
+import * as mongoose from 'mongoose';
+
 export interface OpeningHours {
     id: string;
     dayNumber: number;
@@ -34,23 +36,39 @@ export interface Image {
     link: string;
 }
 
-export class Nadrazka {
-    constructor(
-        public id: string,
-        public name: string,
-        public station: string,
-        public type: string,
-        public introImage: string,
-        public images: Image[],
-        public comments: Comment[],
-        public history: string,
-        public website: string,
-        public socialLinks: SocialLink[],
-        public openingHours: OpeningHours[],
-        public beers: Beer[],
-        public location: {
-            lat: number,
-            lng: number
-        }
-    ) { }
+export const NadrazkaSchema = new mongoose.Schema({
+    name: String,
+    station: String,
+    type: String,
+    introImage: String,
+    images: Array,
+    comments: Array,
+    history: String,
+    website: String,
+    socialLinks: Array,
+    openingHours: Array,
+    beers: Array,
+    location: {
+        lat: Number,
+        lng: Number
+    }
+});
+
+export interface Nadrazka {
+    _id: string;
+    name: string;
+    station: string;
+    type: string;
+    introImage: string;
+    images: Image[];
+    comments: Comment[];
+    history: string;
+    website: string;
+    socialLinks: SocialLink[];
+    openingHours: OpeningHours[];
+    beers: Beer[];
+    location: {
+        lat: number,
+        lng: number
+    };
 }
