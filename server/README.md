@@ -26,9 +26,14 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Server of the PivoNaNadrazi application.
 
 ## Installation
+
+
+```diff
+- Nodejs v14.2.0 required (older version cause some error).
+```
 
 ```bash
 $ npm install
