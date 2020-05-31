@@ -15,15 +15,61 @@ export class NadrazkyService {
     }
 
     async getNadrazka(nadrazkaId: string) {
-        const nadrazka = await this.findNadrazka(nadrazkaId);
-        return nadrazka;
+        return await this.findNadrazka(nadrazkaId);
     }
 
-    private async findNadrazka(id: string): Promise<Nadrazka> {
+    async updateNadrazka(
+        id: string,
+        name: string,
+        station: string,
+        type: string,
+        introImage: string,
+        images: Image[],
+        comments: Comment[],
+        history: string,
+        website: string,
+        socialLinks: SocialLink[],
+        openingHours: OpeningHours[],
+        beers: Beer[],
+        location: {
+            lat: number,
+            lng: number
+        }
+    ) {
+        await this.findNadrazka(id).then((updatedNadrazka) => {
+            if (name) {
+                updatedNadrazka.name = name;
+            }
+            if (station) {
+                updatedNadrazka.station = station;
+            }
+            if (type) {
+                updatedNadrazka.type = type;
+            }
+            if (introImage) {
+                updatedNadrazka.introImage = introImage;
+            }
+            if (history) {
+                updatedNadrazka.history = history;
+            }
+            if (website) {
+                updatedNadrazka.website = website;
+            }
+            if (location) {
+                updatedNadrazka.location = location;
+            }
+            updatedNadrazka.save();
+        });
+    }
+
+    private async findNadrazka(nadrId: string): Promise<Nadrazka> {
         let nadrazka;
         try {
-            nadrazka = await this.nadrazkaModel.findById(id);
+            nadrazka = await this.nadrazkaModel.findById(nadrId).exec();
         } catch (e) {
+            throw new NotFoundException('Could not find the pub');
+        }
+        if (!nadrazka) {
             throw new NotFoundException('Could not find the pub');
         }
         return nadrazka;
@@ -63,5 +109,12 @@ export class NadrazkyService {
         const result = await newNadrazka.save();
         return result.id as string;
         //
+    }
+
+    async deleteNadrazka(nadrId: string) {
+        const result = await this.nadrazkaModel.deleteOne({_id: nadrId}).exec();
+        if (result.n === 0) {
+            throw new NotFoundException('Could not find the pub');
+        }
     }
 }

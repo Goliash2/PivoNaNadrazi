@@ -54,8 +54,8 @@ export const NadrazkaSchema = new mongoose.Schema({
     }
 });
 
-export interface Nadrazka {
-    _id: string;
+export interface Nadrazka extends mongoose.Document {
+    id: string;
     name: string;
     station: string;
     type: string;
