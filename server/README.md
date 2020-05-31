@@ -33,6 +33,7 @@ Server of the PivoNaNadrazi application.
 
 ```diff
 - Nodejs v14.2.0 required (older version cause some error).
+- MongoDB local instance installed and running required (db: pivonanadrazi, collection: nadrazkas).
 ```
 
 ```bash
