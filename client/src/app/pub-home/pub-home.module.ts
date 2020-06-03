@@ -4,20 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { MapaPageRoutingModule } from './mapa-routing.module';
+import { PubHomePageRoutingModule } from './pub-home-routing.module';
 
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-
-import { MapaPage } from './mapa.page';
+import { PubHomePage } from './pub-home.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MapaPageRoutingModule,
-    LeafletModule
+    PubHomePageRoutingModule
   ],
-  declarations: [MapaPage]
+  declarations: [PubHomePage]
 })
-export class MapaPageModule {}
+export class PubHomePageModule {}

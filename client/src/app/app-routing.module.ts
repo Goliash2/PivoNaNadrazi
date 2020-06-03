@@ -9,6 +9,22 @@ const routes: Routes = [
   {
     path: 'mapa',
     loadChildren: () => import('./mapa/mapa.module').then( m => m.MapaPageModule)
+  },
+  {
+    path: 'pub-list',
+    loadChildren: () => import('./pub-list/pub-list.module').then( m => m.PubListPageModule)
+  },
+  {
+    path: 'pub-map',
+    loadChildren: () => import('./pub-map/pub-map.module').then( m => m.PubMapPageModule)
+  },
+  {
+    path: 'pub-home',
+    loadChildren: () => import('./pub-home/pub-home.module').then( m => m.PubHomePageModule)
+  },
+  {
+    path: 'pub-more',
+    loadChildren: () => import('./pub-more/pub-more.module').then( m => m.PubMorePageModule)
   }
 ];
 @NgModule({
