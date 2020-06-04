@@ -51,6 +51,10 @@ export class PubMapPage implements AfterViewInit {
   constructor(private http: HttpClient, private geolocation: Geolocation) { }
 
   ngAfterViewInit(): void {
+  }
+
+  onMapReady(map: Map) {
+    this.map = map;
     this.geolocation.getCurrentPosition().then((resp) => {
       console.log('Current position: lat: ' + resp.coords.latitude + ', lng: ' + resp.coords.longitude);
       this.map.panTo([resp.coords.latitude, resp.coords.longitude]);
@@ -66,12 +70,7 @@ export class PubMapPage implements AfterViewInit {
       // data.coords.latitude
       // data.coords.longitude
     });
-  }
-
-  onMapReady(map: Map) {
-    this.map = map;
     this.http.get('http://localhost:3000/nadrazky').subscribe((nadrazky: Nadrazka[]) => {
-      console.log(nadrazky);
       nadrazky.forEach((nadrazka) => {
         const pubMarker = L.marker([nadrazka.location.lng, nadrazka.location.lat]).addTo(this.map);
         pubMarker.bindPopup('<h1>' + nadrazka.name + '</h1><p>dalsi info: ' + nadrazka.station + '</p>');

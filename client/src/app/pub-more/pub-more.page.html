@@ -1,9 +1,17 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>pub-more</ion-title>
+    <ion-title>Možnosti aplikace</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-list>
+    <ion-item *ngFor="let menu of settings" detail="">
+      <ion-icon slot="start" [name]="'logo-' + menu.icon" [color]="menu.color"></ion-icon>
+      <ion-label>
+        <h2>{{ menu.title }}</h2>
+        <p>{{ menu.description }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
