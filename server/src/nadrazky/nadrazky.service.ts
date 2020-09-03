@@ -1,7 +1,8 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
-import {Beer, Comment, Image, Nadrazka, OpeningHours, SocialLink} from './nadrazky.model';
+import {Beer, Changelog, Comment, Image, Nadrazka, NadrazkaNear, OpeningHours, SocialLink} from './nadrazky.model';
 import {InjectModel} from "@nestjs/mongoose";
 import {Model} from 'mongoose';
+import {max} from 'rxjs/operators';
 
 @Injectable()
 export class NadrazkyService {
@@ -14,6 +15,22 @@ export class NadrazkyService {
         return nadrazky as Nadrazka[];
     }
 
+    async getNearNadrazky(lat: number, lng: number, maxDist: number) {
+        const nadrazky = await this.nadrazkaModel.aggregate([
+            {
+                $geoNear: {
+                    near: {
+                        type: "Point",
+                        coordinates: [lng, lat]
+                    },
+                    distanceField: "dist.calculated",
+                    maxDistance: maxDist,
+                    spherical: true
+                }
+            }]).exec();
+        return nadrazky as NadrazkaNear[];
+    }
+
     async getNadrazka(nadrazkaId: string) {
         return await this.findNadrazka(nadrazkaId);
     }
@@ -23,6 +40,7 @@ export class NadrazkyService {
         name: string,
         station: string,
         type: string,
+        status: string,
         introImage: string,
         images: Image[],
         comments: Comment[],
@@ -34,7 +52,8 @@ export class NadrazkyService {
         location: {
             lat: number,
             lng: number
-        }
+        },
+        changelog: Changelog[]
     ) {
         await this.findNadrazka(id).then((updatedNadrazka) => {
             if (name) {
@@ -45,6 +64,9 @@ export class NadrazkyService {
             }
             if (type) {
                 updatedNadrazka.type = type;
+            }
+            if (status) {
+                updatedNadrazka.status = status;
             }
             if (introImage) {
                 updatedNadrazka.introImage = introImage;
@@ -57,6 +79,9 @@ export class NadrazkyService {
             }
             if (location) {
                 updatedNadrazka.location = location;
+            }
+            if (changelog) {
+                updatedNadrazka.changelog = changelog;
             }
             updatedNadrazka.save();
         });
@@ -79,6 +104,7 @@ export class NadrazkyService {
         name: string,
         station: string,
         type: string,
+        status: string,
         introImage: string,
         images: Image[],
         comments: Comment[],
@@ -90,12 +116,14 @@ export class NadrazkyService {
         location: {
             lat: number,
             lng: number
-        }
+        },
+        changelog: Changelog[]
     ) {
         const newNadrazka = new this.nadrazkaModel({
             name: name, // typescript shortcut allow to just write variable, if it have same name - used below
             station,
             type,
+            status,
             introImage,
             images,
             comments,
@@ -104,7 +132,8 @@ export class NadrazkyService {
             socialLinks,
             openingHours,
             beers,
-            location
+            location,
+            changelog
         });
         const result = await newNadrazka.save();
         return result.id as string;

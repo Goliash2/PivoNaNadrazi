@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Nadrazka } from './nadrazky.model';
+import {Nadrazka, NadrazkaNear} from './nadrazky.model';
 // import {AuthService} from '../auth/auth.service';
 import {BehaviorSubject} from 'rxjs';
 import {map, switchMap, take, tap} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 
 // interface PlaceData {
@@ -21,16 +21,37 @@ import {HttpClient} from '@angular/common/http';
 })
 export class NadrazkyService {
     private innerNadrazky = new BehaviorSubject<Nadrazka[]>([]) ;
+    private innerNearNadrazky = new BehaviorSubject<NadrazkaNear[]>([]) ;
+    httpOptions = {
+        headers: new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'})
+    };
 
     get nadrazky() {
         return this.innerNadrazky.asObservable();
+    }
+    get nearNadrazky() {
+        return this.innerNearNadrazky.asObservable();
     }
 
     constructor( /* private authService: AuthService, */ private http: HttpClient) {}
 
     fetchNadrazky() {
-        return this.http.get<Nadrazka[]>('http://localhost:3000/nadrazky').pipe(tap(nadrazky => {
+        return this.http.get<Nadrazka[]>('https://app.nadrazky.fd.cvut.cz:3000/nadrazky').pipe(tap(nadrazky => {
+        // return this.http.get<Nadrazka[]>('http://localhost:3000/nadrazky').pipe(tap(nadrazky => {
             this.innerNadrazky.next(nadrazky);
+        }));
+    }
+
+    fetchNearNadrazky(lat: number, lng: number, maxdist: number) {
+        const data = {
+            lat,
+            lng,
+            maxdist
+        };
+        return this.http.post<NadrazkaNear[]>('https://app.nadrazky.fd.cvut.cz:3000/nadrazky-near', data, this.httpOptions)
+            .pipe(tap(nadrazky => {
+        // return this.http.post<NadrazkaNear[]>('http://localhost:3000/nadrazky-near', data, this.httpOptions).pipe(tap(nadrazky => {
+            this.innerNearNadrazky.next(nadrazky);
         }));
     }
 

@@ -1,14 +1,12 @@
 import * as mongoose from 'mongoose';
 
 export interface OpeningHours {
-    id: string;
     dayNumber: number;
     from: string;
     till: string;
 }
 
 export interface Beer {
-    id: string;
     name: string;
     price: number;
     brewery: string;
@@ -17,29 +15,33 @@ export interface Beer {
 }
 
 export interface Comment {
-    id: string;
     user: string;
     text: string;
     inserted: string;
 }
 
 export interface SocialLink {
-    id: string;
     type: string;
     name: string;
     link: string;
 }
 
 export interface Image {
-    id: string;
     name: string;
     link: string;
+    inserted: string;
+}
+
+export interface Changelog {
+    log: string;
+    inserted: string;
 }
 
 export const NadrazkaSchema = new mongoose.Schema({
     name: String,
     station: String,
     type: String,
+    status: String,
     introImage: String,
     images: Array,
     comments: Array,
@@ -51,7 +53,8 @@ export const NadrazkaSchema = new mongoose.Schema({
     location: {
         lat: Number,
         lng: Number
-    }
+    },
+    changelog: Array
 });
 
 export interface Nadrazka extends mongoose.Document {
@@ -59,6 +62,7 @@ export interface Nadrazka extends mongoose.Document {
     name: string;
     station: string;
     type: string;
+    status: string;
     introImage: string;
     images: Image[];
     comments: Comment[];
@@ -70,5 +74,12 @@ export interface Nadrazka extends mongoose.Document {
     location: {
         lat: number,
         lng: number
+    };
+    changelog: Changelog[];
+}
+
+export interface NadrazkaNear extends Nadrazka {
+    dist: {
+        calculated: number
     };
 }

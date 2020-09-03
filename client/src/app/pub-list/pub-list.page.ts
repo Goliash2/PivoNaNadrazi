@@ -11,6 +11,8 @@ import {Nadrazka} from '../shared/nadrazky.model';
 export class PubListPage implements OnInit, OnDestroy {
 
   isLoading = false;
+  openedSwitch = true;
+  searchBoxValue: string;
   loadedNadrazky: Nadrazka[];
   filteredNadrazky: Nadrazka[];
   listedloadedNadrazky: Nadrazka[];
@@ -21,8 +23,9 @@ export class PubListPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.nadrazkySub = this.nadrazkyService.nadrazky.subscribe(nadrazky => {
       this.loadedNadrazky = nadrazky;
-      this.filteredNadrazky = this.loadedNadrazky;
-      this.listedloadedNadrazky = this.loadedNadrazky.slice(1);
+      this.filteredNadrazky = this.loadedNadrazky.filter(
+          nadrazka => nadrazka.status === 'Otevřena');
+      this.listedloadedNadrazky = this.filteredNadrazky.slice(1);
     });
   }
 
@@ -33,16 +36,34 @@ export class PubListPage implements OnInit, OnDestroy {
     });
   }
 
-  updateFilter(event) {
-    if (!event.detail.value) {
-      this.filteredNadrazky = this.loadedNadrazky;
-      this.listedloadedNadrazky = this.filteredNadrazky.slice(1);
+  updateFilter(search: string, openedSwitch: boolean) {
+    if (!search) {
+      if (!openedSwitch) {
+        this.filteredNadrazky = this.loadedNadrazky;
+      } else {
+        this.filteredNadrazky = this.loadedNadrazky.filter(
+            nadrazka => nadrazka.status === 'Otevřena');
+      }
     } else {
-      this.filteredNadrazky = this.loadedNadrazky.filter(
-          nadrazka => nadrazka.name.toLowerCase().indexOf(event.detail.value.toLowerCase()) > -1);
-      this.listedloadedNadrazky = this.filteredNadrazky.slice(1);
+      if (!openedSwitch) {
+        this.filteredNadrazky = this.loadedNadrazky.filter(
+            nadrazka => nadrazka.name.toLowerCase().indexOf(search.toLowerCase()) > -1);
+      } else {
+        this.filteredNadrazky = this.loadedNadrazky.filter(
+            nadrazka => (nadrazka.name.toLowerCase().indexOf(search.toLowerCase()) > -1) && (nadrazka.status === 'Otevřena'));
+      }
     }
+  }
+
+  changeSearch(event) {
+    this.searchBoxValue = event.detail.value;
+    this.updateFilter(this.searchBoxValue, this.openedSwitch);
+  }
+
+  changeOpened(event) {
     console.log(event.detail.value);
+    this.openedSwitch = JSON.parse(event.detail.value);
+    this.updateFilter(this.searchBoxValue, this.openedSwitch);
   }
 
   // onFilterUpdate() {

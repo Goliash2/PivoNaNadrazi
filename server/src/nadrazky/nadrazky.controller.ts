@@ -1,6 +1,6 @@
 import {Body, Controller, Get, Post, Param, Patch, Delete} from '@nestjs/common';
 import {NadrazkyService} from "./nadrazky.service";
-import {Beer, Image, Comment, OpeningHours, SocialLink} from "./nadrazky.model";
+import {Beer, Image, Comment, OpeningHours, SocialLink, Changelog} from './nadrazky.model';
 
 @Controller('nadrazky')
 
@@ -15,8 +15,8 @@ export class NadrazkyController {
     }
 
     @Get(':id')
-    getNadrazka(@Param('id') id: string) {
-        return this.nadrazkyService.getNadrazka(id);
+    async getNadrazka(@Param('id') id: string) {
+        return await this.nadrazkyService.getNadrazka(id);
     }
 
     @Post()
@@ -24,6 +24,7 @@ export class NadrazkyController {
         name: string,
         station: string,
         type: string,
+        status: string,
         introImage: string,
         images: Image[],
         comments: Comment[],
@@ -35,12 +36,14 @@ export class NadrazkyController {
         location: {
             lat: number,
             lng: number
-        }
+        },
+        changelog: Changelog[]
     }) {
         const generatedId = await this.nadrazkyService.insertNadrazka(
             completeBody.name,
             completeBody.station,
             completeBody.type,
+            completeBody.status,
             completeBody.introImage,
             completeBody.images,
             completeBody.comments,
@@ -49,7 +52,8 @@ export class NadrazkyController {
             completeBody.socialLinks,
             completeBody.openingHours,
             completeBody.beers,
-            completeBody.location
+            completeBody.location,
+            completeBody.changelog
         );
         return { id: generatedId };
     }
@@ -59,6 +63,7 @@ export class NadrazkyController {
         name: string,
         station: string,
         type: string,
+        status: string,
         introImage: string,
         images: Image[],
         comments: Comment[],
@@ -70,13 +75,15 @@ export class NadrazkyController {
         location: {
             lat: number,
             lng: number
-        }
+        },
+        changelog: Changelog[]
     }) {
         await this.nadrazkyService.updateNadrazka(
             nadrId,
             completeBody.name,
             completeBody.station,
             completeBody.type,
+            completeBody.status,
             completeBody.introImage,
             completeBody.images,
             completeBody.comments,
@@ -85,7 +92,8 @@ export class NadrazkyController {
             completeBody.socialLinks,
             completeBody.openingHours,
             completeBody.beers,
-            completeBody.location
+            completeBody.location,
+            completeBody.changelog
         );
         return null;
     }

@@ -1,9 +1,74 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>pub-home</ion-title>
+    <ion-segment value="true" (ionChange)="changeOpened($event)">
+      <ion-segment-button value="true">
+        <ion-label>Otevřené</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="false">
+        <ion-label>Všechny</ion-label>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-grid *ngIf="!isLoading && (!loadedNadrazky || loadedNadrazky.length<=0)">
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+        <p>Žádná nádražka nebyla nalezena! Zkuste to později.</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid *ngIf="!isLoading && loadedNadrazky &&(!filteredNadrazky || filteredNadrazky.length<=0)">
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+        <p>Žádná nádražka nebyla nalezena! Zkuste hledat jiný název.</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid *ngIf="isLoading">
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+        <ion-spinner></ion-spinner>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid *ngIf="!isLoading && filteredNadrazky.length>0">
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title> {{ filteredNadrazky[0].name }}</ion-card-title>
+          </ion-card-header>
+          <ion-img *ngIf="filteredNadrazky[0].introImage" [src]="filteredNadrazky[0].introImage"></ion-img>
+          <ion-card-content>
+            <p> {{ filteredNadrazky[0].station }} </p>
+            <p> {{ (filteredNadrazky[0].dist.calculated > 1000) ? (filteredNadrazky[0].dist.calculated/1000).toFixed(1) + ' km' : (filteredNadrazky[0].dist.calculated).toFixed(0) + ' m' }} </p>
+            <ion-button size="small" [routerLink]="['/', 'nadrazka', 'tabs', 'discover', loadedNadrazky[0].id]">Více</ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
+        <ion-virtual-scroll
+                [items]="listedloadedNadrazky"
+                approxHeaderHeight="50px"
+                approxItemHeight="60px"
+        >
+          <ion-item *virtualItem="let nadrazka" [routerLink]="['/', 'places', 'tabs', 'discover', nadrazka.id]" detail="">
+            <ion-thumbnail slot="start">
+              <ion-img *ngIf="nadrazka.introImage" [src]="nadrazka.introImage"></ion-img>
+              <ion-img *ngIf="!nadrazka.introImage" src="assets/icon/ms-icon-310x310.png"></ion-img>
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{ nadrazka.name }}</h2>
+              <p>{{ nadrazka.station }} - {{ (nadrazka.dist.calculated > 1000) ? (nadrazka.dist.calculated/1000).toFixed(1) + ' km' : (nadrazka.dist.calculated).toFixed(0) + ' m' }}</p>
+              <p>{{ nadrazka.status }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-virtual-scroll>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -1,16 +1,16 @@
 <ion-header>
   <ion-toolbar>
-    <ion-segment value="all">
-      <ion-segment-button value="all">
+    <ion-segment value="true" (ionChange)="changeOpened($event)">
+      <ion-segment-button value="true">
         <ion-label>Otevřené</ion-label>
       </ion-segment-button>
-      <ion-segment-button value="favorites">
+      <ion-segment-button value="false">
         <ion-label>Všechny</ion-label>
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar placeholder="Hledej nádražku" (ionChange)="updateFilter($event)"></ion-searchbar>
+    <ion-searchbar placeholder="Hledej nádražku" (ionChange)="changeSearch($event)"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -39,23 +39,8 @@
   <ion-grid *ngIf="!isLoading && filteredNadrazky.length>0">
     <ion-row>
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title> {{ filteredNadrazky[0].name }}</ion-card-title>
-            <ion-card-subtitle> {{ filteredNadrazky[0].station }}</ion-card-subtitle>
-          </ion-card-header>
-          <ion-img *ngIf="filteredNadrazky[0].introImage" [src]="filteredNadrazky[0].introImage"></ion-img>
-          <ion-card-content>
-            <p> {{ filteredNadrazky[0].history }} </p>
-            <ion-button size="small" [routerLink]="['/', 'nadrazka', 'tabs', 'discover', loadedNadrazky[0].id]">Více</ion-button>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
         <ion-virtual-scroll
-                [items]="listedloadedNadrazky"
+                [items]="filteredNadrazky"
                 approxHeaderHeight="50px"
                 approxItemHeight="60px"
         >
