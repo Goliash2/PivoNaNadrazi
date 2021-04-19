@@ -12,7 +12,7 @@ services:
       - nadrazky-db:/data/db
     container_name: db.nadrazky
     environment:
-      MONGO_INITDB_DATABASE: eshop
+      MONGO_INITDB_DATABASE: pivonanadrazi
     restart: always
 
   backend:
