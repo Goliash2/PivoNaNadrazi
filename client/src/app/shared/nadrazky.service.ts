@@ -36,7 +36,7 @@ export class NadrazkyService {
     constructor( /* private authService: AuthService, */ private http: HttpClient) {}
 
     fetchNadrazky() {
-        return this.http.get<Nadrazka[]>('https://app.nadrazky.fd.cvut.cz:3000/nadrazky').pipe(tap(nadrazky => {
+        return this.http.get<Nadrazka[]>('https://app.nadrazky.fd.cvut.cz/api/nadrazky').pipe(tap(nadrazky => {
         // return this.http.get<Nadrazka[]>('http://localhost:3000/nadrazky').pipe(tap(nadrazky => {
             this.innerNadrazky.next(nadrazky);
         }));
@@ -48,7 +48,7 @@ export class NadrazkyService {
             lng,
             maxdist
         };
-        return this.http.post<NadrazkaNear[]>('https://app.nadrazky.fd.cvut.cz:3000/nadrazky-near', data, this.httpOptions)
+        return this.http.post<NadrazkaNear[]>('https://app.nadrazky.fd.cvut.cz/api/nadrazky-near', data, this.httpOptions)
             .pipe(tap(nadrazky => {
         // return this.http.post<NadrazkaNear[]>('http://localhost:3000/nadrazky-near', data, this.httpOptions).pipe(tap(nadrazky => {
             this.innerNearNadrazky.next(nadrazky);

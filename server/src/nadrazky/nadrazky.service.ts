@@ -83,7 +83,7 @@ export class NadrazkyService {
             if (changelog) {
                 updatedNadrazka.changelog = changelog;
             }
-            updatedNadrazka.save();
+            // updatedNadrazka.save();
         });
     }
 

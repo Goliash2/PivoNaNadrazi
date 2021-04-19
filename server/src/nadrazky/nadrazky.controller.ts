@@ -2,7 +2,7 @@ import {Body, Controller, Get, Post, Param, Patch, Delete} from '@nestjs/common'
 import {NadrazkyService} from "./nadrazky.service";
 import {Beer, Image, Comment, OpeningHours, SocialLink, Changelog} from './nadrazky.model';
 
-@Controller('nadrazky')
+@Controller('api/nadrazky')
 
 export class NadrazkyController {
     constructor(private readonly nadrazkyService: NadrazkyService) {

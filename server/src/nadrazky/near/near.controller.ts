@@ -1,7 +1,7 @@
 import {Body, Controller, Get, Param, Post} from '@nestjs/common';
 import {NadrazkyService} from '../nadrazky.service';
 
-@Controller('nadrazky-near')
+@Controller('api/nadrazky-near')
 export class NearController {
     constructor(private readonly nadrazkyService: NadrazkyService) {
     }

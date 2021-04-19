@@ -1,0 +1,43 @@
+version: "3.9"
+
+volumes:
+  nadrazky-db:
+  nadrazky-data:
+
+services:
+
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - nadrazky-db:/data/db
+    container_name: db.nadrazky
+    environment:
+      MONGO_INITDB_DATABASE: eshop
+    restart: always
+
+  backend:
+    build: ./backend
+    container_name: backend.nadrazky
+    environment:
+      DATABASE_URL: mongodb://db.nadrazky/pivonanadrazi
+    volumes:
+      - nadrazky-data:/data
+    depends_on:
+      - mongodb
+    restart: always
+    ports:
+      - '3000:3000'
+
+  frontend:
+    build: ./frontend
+    container_name: frontend.nadrazky
+    ports:
+      - '80:80'
+    restart: always
+    depends_on:
+      - backend
+
+networks:
+  default:
+    external:
+      name: global-npm-net
