@@ -16,7 +16,7 @@ services:
     restart: always
 
   backend:
-    build: ./backend
+    build: ./server
     container_name: backend.nadrazky
     environment:
       DATABASE_URL: mongodb://db.nadrazky/pivonanadrazi
@@ -29,7 +29,7 @@ services:
       - '3000:3000'
 
   frontend:
-    build: ./frontend
+    build: ./client
     container_name: frontend.nadrazky
     ports:
       - '80:80'
