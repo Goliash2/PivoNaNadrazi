@@ -5,7 +5,10 @@ import { AppService } from './app.service';
 import {NadrazkyModule} from "./nadrazky/nadrazky.module";
 
 @Module({
-  imports: [NadrazkyModule, MongooseModule.forRoot('mongodb://localhost:27017/pivonanadrazi')],
+  imports: [
+    NadrazkyModule,
+    MongooseModule.forRoot(process.env.DATABASE_URL)
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
