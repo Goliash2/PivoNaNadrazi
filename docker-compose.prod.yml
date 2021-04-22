@@ -7,7 +7,7 @@ volumes:
 services:
 
   mongodb:
-    image: 'mongo'
+    build: ./mongo-import
     volumes:
       - nadrazky-db:/data/db
     container_name: db.nadrazky
